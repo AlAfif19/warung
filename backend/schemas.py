@@ -1,7 +1,7 @@
 """
 Pydantic schemas for API request/response models
 """
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 from typing import Optional, List
 from datetime import datetime
 from decimal import Decimal
@@ -41,13 +41,6 @@ class RawMaterialBase(BaseModel):
     quantity: Decimal = Field(..., gt=0, decimal_places=3)
     unit: str = Field(..., min_length=1, max_length=50)
     unit_price: Decimal = Field(..., ge=0, decimal_places=2)
-    
-    @field_validator('total', mode='before')
-    @classmethod
-    def calculate_total(cls, v, info):
-        if 'quantity' in info.data and 'unit_price' in info.data:
-            return info.data['quantity'] * info.data['unit_price']
-        return v
 
 
 class RawMaterialCreate(RawMaterialBase):
@@ -242,7 +235,7 @@ class ProjectionCalculationResponse(BaseModel):
 class ExportRequest(BaseModel):
     product_id: int
     projection_id: Optional[int] = None
-    format: str = Field(..., regex="^(pdf|excel)$")
+    format: str = Field(..., pattern="^(pdf|excel)$")
     include_charts: bool = True
 
 
