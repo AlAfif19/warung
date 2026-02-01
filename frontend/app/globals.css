@@ -79,6 +79,22 @@
 }
 
 @layer components {
+  /* Container for consistent spacing across all pages */
+  .container {
+    @apply px-5 md:px-8 lg:px-10 mx-auto;
+    max-width: 1200px;
+  }
+
+  .container-sm {
+    @apply px-5 md:px-8 lg:px-10 mx-auto;
+    max-width: 800px;
+  }
+
+  .container-lg {
+    @apply px-5 md:px-8 lg:px-10 mx-auto;
+    max-width: 1400px;
+  }
+
   .btn {
     @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
   }

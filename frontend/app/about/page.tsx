@@ -80,7 +80,7 @@ export default function AboutPage() {
       
       <div className="relative z-10">
         {/* Hero Section */}
-        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <section className="py-20 mb-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -97,7 +97,7 @@ export default function AboutPage() {
         </section>
 
         {/* About Section */}
-        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <section className="py-20 mb-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -144,7 +144,7 @@ export default function AboutPage() {
         </section>
 
         {/* Team Section */}
-        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <section className="py-20 mb-8">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -184,7 +184,7 @@ export default function AboutPage() {
         </section>
 
         {/* Testimonials Section */}
-        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <section className="py-20 mb-8">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -227,7 +227,7 @@ export default function AboutPage() {
         </section>
 
         {/* Blog Section */}
-        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <section className="py-20 mb-8">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -271,11 +271,9 @@ export default function AboutPage() {
 
         {/* Footer */}
         <footer className="bg-white border-t border-gray-200 py-8">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <p className="text-center text-gray-500 text-sm">
-              © 2024 Warung HPP Calculator. Dibuat dengan ❤️ untuk UMKM Indonesia.
-            </p>
-          </div>
+          <p className="text-center text-gray-500 text-sm">
+            © 2024 Warung HPP Calculator. Dibuat dengan ❤️ untuk UMKM Indonesia.
+          </p>
         </footer>
       </div>
     </div>

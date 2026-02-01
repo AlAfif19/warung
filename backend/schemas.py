@@ -105,6 +105,7 @@ class ProductBase(BaseModel):
     batch_size: int = Field(default=1, gt=0)
     selling_price: Optional[Decimal] = Field(default=None, ge=0, decimal_places=2)
     pricing_tier: PricingTier = PricingTier.standard
+    keywords: Optional[str] = None
 
 
 class ProductCreate(ProductBase):
@@ -118,11 +119,13 @@ class ProductUpdate(BaseModel):
     batch_size: Optional[int] = Field(default=None, gt=0)
     selling_price: Optional[Decimal] = Field(default=None, ge=0, decimal_places=2)
     pricing_tier: Optional[PricingTier] = None
+    keywords: Optional[str] = None
 
 
 class ProductResponse(ProductBase):
     id: int
     hpp_per_unit: Decimal
+    keywords: Optional[str] = None
     raw_materials: List[RawMaterialResponse] = []
     fixed_cost_allocations: List[ProductFixedCostAllocationResponse] = []
     created_at: datetime
@@ -256,3 +259,29 @@ class ErrorResponse(BaseModel):
     error: str
     detail: Optional[str] = None
     success: bool = False
+
+
+# Chatbot Request/Response Models
+class ChatbotRequest(BaseModel):
+    message: str = Field(..., min_length=1, max_length=1000)
+
+
+class MenuRecommendation(BaseModel):
+    id: int
+    name: str
+    hpp_per_unit: float
+    selling_price: Optional[float] = None
+    pricing_tier: str
+    keywords: Optional[str] = None
+
+
+class SectionNavigation(BaseModel):
+    section_name: str
+    section_path: str
+    button_text: str
+
+
+class ChatbotResponse(BaseModel):
+    response: str
+    recommendations: List[MenuRecommendation] = []
+    navigation_suggestions: List[SectionNavigation] = []

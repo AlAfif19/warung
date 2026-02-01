@@ -2,8 +2,9 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Calculator, ShoppingCart, QrCode, MessageSquare, TrendingUp, ArrowRight, CheckCircle } from 'lucide-react';
+import { Calculator, ShoppingCart, QrCode, MessageSquare, TrendingUp, ArrowRight, CheckCircle, Bot } from 'lucide-react';
 import BackgroundAnimation from '@/components/BackgroundAnimation';
+import Chatbot from '@/components/Chatbot';
 
 export default function Home() {
   return (
@@ -12,7 +13,7 @@ export default function Home() {
       
       <div className="relative z-10">
         {/* Hero Section */}
-        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
+        <section className="py-20 md:py-32 mb-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -61,7 +62,7 @@ export default function Home() {
         </section>
 
         {/* Features Section */}
-        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <section className="py-20 mb-8">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -123,7 +124,7 @@ export default function Home() {
         </section>
 
         {/* Pricing Section */}
-        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <section className="py-20 mb-8">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -238,7 +239,7 @@ export default function Home() {
         </section>
 
         {/* CTA Section */}
-        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <section className="py-20 mb-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -262,13 +263,41 @@ export default function Home() {
           </motion.div>
         </section>
 
+        {/* Chatbot Section */}
+        <section className="py-20 mb-8">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-12"
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="inline-block mb-6"
+            >
+              <div className="bg-gradient-to-br from-[#ff6b6b] to-[#ff5252] p-4 rounded-full">
+                <Bot className="h-8 w-8 text-white" />
+              </div>
+            </motion.div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Tanya Asisten Virtual Kami
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Dapatkan rekomendasi menu dan jawaban pertanyaan Anda langsung dari chatbot kami
+            </p>
+          </motion.div>
+          <Chatbot />
+        </section>
+
         {/* Footer */}
         <footer className="bg-white border-t border-gray-200 py-8">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <p className="text-center text-gray-500 text-sm">
-              © 2024 Warung HPP Calculator. Dibuat dengan ❤️ untuk UMKM Indonesia.
-            </p>
-          </div>
+          <p className="text-center text-gray-500 text-sm">
+            © 2024 Warung HPP Calculator. Dibuat dengan ❤️ untuk UMKM Indonesia.
+          </p>
         </footer>
       </div>
     </div>

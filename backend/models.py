@@ -18,6 +18,7 @@ class Product(Base):
     hpp_per_unit = Column(Numeric(12, 2), default=0.00)
     selling_price = Column(Numeric(12, 2), default=0.00)
     pricing_tier = Column(SQLEnum(PricingTier), default=PricingTier.standard)
+    keywords = Column(Text, nullable=True, comment="Comma-separated keywords for chatbot matching")
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
     
