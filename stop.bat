@@ -8,41 +8,29 @@ echo Stopping Warung HPP Calculator...
 echo ========================================
 echo.
 
-REM PID file to track running processes
-set PID_FILE=.pids
-
-REM Check if PID file exists
-if not exist %PID_FILE% (
-    echo [WARNING] No running services found (PID file not found).
-    echo          Services might not be running or were stopped manually.
-    exit /b 0
-)
-
-REM Read PIDs from file
-set /p BACKEND_PID=<%PID_FILE%
-set /p FRONTEND_PID=<%PID_FILE%
-
-REM Stop Backend
+REM Stop Backend (Python processes)
 echo [1/2] Stopping Backend...
-taskkill /F /PID %BACKEND_PID% > nul 2>&1
+taskkill /F /IM python.exe > nul 2>&1
 if %errorlevel% equ 0 (
-    echo [OK] Backend stopped (PID: %BACKEND_PID%)
+    echo [OK] Backend stopped
 ) else (
-    echo [WARNING] Backend process not found (PID: %BACKEND_PID%)
+    echo [WARNING] No backend processes found
 )
 
-REM Stop Frontend
+REM Stop Frontend (Node processes)
 echo.
 echo [2/2] Stopping Frontend...
-taskkill /F /PID %FRONTEND_PID% > nul 2>&1
+taskkill /F /IM node.exe > nul 2>&1
 if %errorlevel% equ 0 (
-    echo [OK] Frontend stopped (PID: %FRONTEND_PID%)
+    echo [OK] Frontend stopped
 ) else (
-    echo [WARNING] Frontend process not found (PID: %FRONTEND_PID%)
+    echo [WARNING] No frontend processes found
 )
 
-REM Remove PID file
-del %PID_FILE%
+REM Remove PID file if it exists
+if exist .pids (
+    del .pids
+)
 
 echo.
 echo ========================================
