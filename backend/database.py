@@ -104,6 +104,10 @@ def init_database():
     """
     Initialize database tables
     """
+    # Import models to ensure they're registered with Base metadata
+    import models
+    
+    # Create all tables
     Base.metadata.create_all(bind=engine)
     print("Database tables initialized successfully")
 

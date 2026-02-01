@@ -21,7 +21,8 @@ from schemas import (
     ScenarioCreate, ScenarioResponse,
     HPPCalculationRequest, HPPCalculationResponse,
     ProjectionCalculationRequest, ProjectionCalculationResponse,
-    MessageResponse, ErrorResponse
+    MessageResponse, ErrorResponse,
+    ChatbotRequest, ChatbotResponse, SectionNavigation
 )
 from calculations import calculation_service
 
@@ -31,6 +32,24 @@ app = FastAPI(
     version=settings.APP_VERSION,
     description="API for HPP Calculator and Business Projection System"
 )
+
+# Initialize database tables on startup
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database tables on startup if they don't exist"""
+    try:
+        from sqlalchemy import inspect
+        inspector = inspect(engine)
+        tables = inspector.get_table_names()
+        
+        if not tables:
+            print("No database tables found. Initializing...")
+            from database import init_database
+            init_database()
+        else:
+            print(f"Database initialized with {len(tables)} tables")
+    except Exception as e:
+        print(f"Error during database initialization: {type(e).__name__}: {e}")
 
 # Configure CORS
 app.add_middleware(
@@ -483,6 +502,184 @@ def list_product_scenarios(product_id: int, db: Session = Depends(get_db)):
     
     scenarios = db.query(Scenario).filter(Scenario.product_id == product_id).all()
     return scenarios
+
+
+# ==================== Chatbot Endpoints ====================
+
+@app.post("/api/chatbot", response_model=ChatbotResponse, tags=["Chatbot"])
+def chatbot_response(request: ChatbotRequest, db: Session = Depends(get_db)):
+    """
+    Chatbot endpoint that answers questions and recommends menu items
+    """
+    # Get products from database
+    try:
+        products = db.query(Product).all()
+        
+        # Convert to list of dicts for compatibility
+        product_list = [
+            {
+                'id': p.id,
+                'name': p.name,
+                'hpp_per_unit': float(p.hpp_per_unit),
+                'selling_price': float(p.selling_price),
+                'pricing_tier': p.pricing_tier,
+                'mode': p.mode,
+                'batch_size': p.batch_size,
+                'keywords': p.keywords
+            }
+            for p in products
+        ]
+    except Exception as e:
+        # If database query fails, use empty product list
+        print(f"Error querying database: {type(e).__name__}: {e}")
+        product_list = []
+    
+    # Process the message and generate response
+    response = generate_chatbot_response(request.message, product_list)
+    recommendations = get_menu_recommendations(request.message, product_list)
+    navigation_suggestions = get_navigation_suggestions(request.message)
+    
+    return ChatbotResponse(
+        response=response,
+        recommendations=recommendations,
+        navigation_suggestions=navigation_suggestions
+    )
+
+
+def generate_chatbot_response(message: str, products: list) -> str:
+    """
+    Generate chatbot response based on user message
+    """
+    message_lower = message.lower()
+    
+    # Greetings
+    if any(word in message_lower for word in ['halo', 'hai', 'hello', 'hi', 'selamat pagi', 'selamat siang', 'selamat sore', 'selamat malam']):
+        greetings = [
+            "Halo! Selamat datang di Warung HPP Calculator. Ada yang bisa saya bantu?",
+            "Hai! Saya asisten virtual warung Anda. Mau tanya apa tentang menu atau HPP?",
+            "Selamat datang! Saya siap membantu Anda dengan rekomendasi menu dan perhitungan HPP."
+        ]
+        import random
+        return random.choice(greetings)
+    
+    # Questions about HPP
+    if 'hpp' in message_lower or 'harga pokok' in message_lower or 'cost of goods' in message_lower:
+        return "HPP (Harga Pokok Penjualan) adalah total biaya yang dikeluarkan untuk memproduksi satu unit produk. Ini mencakup biaya bahan baku dan alokasi biaya tetap. Anda bisa menggunakan kalkulator HPP kami untuk menghitungnya secara akurat!"
+    
+    # Questions about pricing
+    if 'harga jual' in message_lower or 'pricing' in message_lower or 'margin' in message_lower:
+        return "Untuk menentukan harga jual yang tepat, kami menyediakan 3 tier pricing:\n• Competitive: margin 20-25%\n• Standard: margin 30-35%\n• Premium: margin 40-50%\nAnda bisa memilih sesuai strategi bisnis Anda!"
+    
+    # Questions about features
+    if 'fitur' in message_lower or 'feature' in message_lower:
+        return "Platform kami memiliki fitur lengkap:\n✓ Kalkulator HPP\n✓ Manajemen Menu\n✓ POS & Kasir\n✓ QR Code Payment\n✓ WhatsApp Order\n✓ Laporan Bisnis\n✓ Proyeksi Keuntungan"
+    
+    # Questions about getting started
+    if 'mulai' in message_lower or 'start' in message_lower or 'cara pakai' in message_lower:
+        return "Untuk memulai:\n1. Buka menu Kalkulator HPP\n2. Masukkan bahan baku dan biaya\n3. Sistem akan menghitung HPP otomatis\n4. Dapatkan rekomendasi harga jual\n5. Simpan produk Anda\n\nButuh bantuan lebih lanjut?"
+    
+    # Questions about menu recommendations
+    if 'menu' in message_lower or 'rekomendasi' in message_lower or 'makanan' in message_lower or 'minuman' in message_lower:
+        if products:
+            return f"Kami memiliki {len(products)} menu tersedia. Berikut beberapa rekomendasi populer:\n" + "\n".join([f"• {p['name']} - Rp {p['hpp_per_unit']:,.0f}" for p in products[:3]])
+        else:
+            return "Belum ada menu yang tersedia. Silakan tambahkan menu melalui fitur Kalkulator HPP!"
+    
+    # Default response
+    default_responses = [
+        "Terima kasih atas pertanyaan Anda. Saya bisa membantu dengan:\n• Rekomendasi menu\n• Perhitungan HPP\n• Strategi pricing\n• Fitur platform\n\nApa yang ingin Anda tanyakan?",
+        "Maaf, saya kurang mengerti. Bisa Anda jelaskan lebih detail? Saya siap membantu dengan pertanyaan tentang menu, HPP, atau fitur kami.",
+        "Pertanyaan menarik! Untuk informasi lebih spesifik, silakan tanya tentang:\n• Menu dan rekomendasi\n• HPP dan pricing\n• Cara menggunakan platform"
+    ]
+    import random
+    return random.choice(default_responses)
+
+
+def get_menu_recommendations(message: str, products: list) -> list:
+    """
+    Get menu recommendations based on user message and product keywords
+    """
+    if not products:
+        return []
+    
+    message_lower = message.lower()
+    recommendations = []
+    
+    # First, try to match against product keywords
+    for product in products:
+        if product.get('keywords'):
+            product_keywords = [k.strip().lower() for k in product['keywords'].split(',')]
+            if any(keyword in message_lower for keyword in product_keywords):
+                recommendations.append(product)
+    
+    # If we found keyword matches, return them
+    if recommendations:
+        return recommendations[:5]
+    
+    # Filter by predefined keywords if no product keywords match
+    keywords = {
+        'murah': lambda p: p['hpp_per_unit'] < 50000,
+        'mahal': lambda p: p['hpp_per_unit'] > 100000,
+        'terjangkau': lambda p: 30000 <= p['hpp_per_unit'] <= 70000,
+        'premium': lambda p: p['pricing_tier'] == 'premium',
+        'standard': lambda p: p['pricing_tier'] == 'standard',
+        'competitive': lambda p: p['pricing_tier'] == 'competitive',
+    }
+    
+    # Check for keywords in message
+    for keyword, filter_func in keywords.items():
+        if keyword in message_lower:
+            filtered = [p for p in products if filter_func(p)]
+            if filtered:
+                recommendations.extend(filtered[:3])
+                break
+    
+    # If no specific keyword matches, return top 3 products
+    if not recommendations:
+        recommendations = products[:3]
+    
+    return recommendations
+
+
+def get_navigation_suggestions(message: str) -> list:
+    """
+    Get section navigation suggestions based on user message
+    """
+    message_lower = message.lower()
+    suggestions = []
+    
+    # Define section mappings
+    section_mappings = {
+        'about': {
+            'keywords': ['about', 'profile', 'profil', 'tentang', 'perusahaan', 'kami'],
+            'section_name': 'About',
+            'section_path': '/about',
+            'button_text': 'Lihat Tentang Kami'
+        },
+        'calculator': {
+            'keywords': ['calculator', 'hitung', 'hpp', 'harga pokok', 'biaya', 'perhitungan'],
+            'section_name': 'Calculator',
+            'section_path': '/calculator',
+            'button_text': 'Buka Kalkulator HPP'
+        },
+        'menu': {
+            'keywords': ['menu', 'daftar', 'makanan', 'minuman', 'produk'],
+            'section_name': 'Menu',
+            'section_path': '/menu',
+            'button_text': 'Lihat Menu'
+        },
+    }
+    
+    # Check which section matches the message
+    for section_name, section_data in section_mappings.items():
+        if any(keyword in message_lower for keyword in section_data['keywords']):
+            suggestions.append(SectionNavigation(
+                section_name=section_data['section_name'],
+                section_path=section_data['section_path'],
+                button_text=section_data['button_text']
+            ))
+    
+    return suggestions
 
 
 # Run the application

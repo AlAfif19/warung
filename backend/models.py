@@ -1,7 +1,7 @@
 """
 SQLAlchemy ORM models for database tables
 """
-from sqlalchemy import Column, Integer, String, Enum as SQLEnum, DateTime, Decimal, Boolean, Text, ForeignKey, Index
+from sqlalchemy import Column, Integer, String, Enum as SQLEnum, DateTime, Boolean, Text, ForeignKey, Index, Numeric
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from database import Base
@@ -15,9 +15,10 @@ class Product(Base):
     name = Column(String(255), nullable=False)
     mode = Column(SQLEnum(ProductMode), nullable=False, default=ProductMode.per_pcs)
     batch_size = Column(Integer, default=1, comment="Number of units per batch if mode is per_batch")
-    hpp_per_unit = Column(Decimal(12, 2), default=0.00)
-    selling_price = Column(Decimal(12, 2), default=0.00)
+    hpp_per_unit = Column(Numeric(12, 2), default=0.00)
+    selling_price = Column(Numeric(12, 2), default=0.00)
     pricing_tier = Column(SQLEnum(PricingTier), default=PricingTier.standard)
+    keywords = Column(Text, nullable=True, comment="Comma-separated keywords for chatbot matching")
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
     
@@ -39,10 +40,10 @@ class RawMaterial(Base):
     id = Column(Integer, primary_key=True, index=True)
     product_id = Column(Integer, ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
     name = Column(String(255), nullable=False)
-    quantity = Column(Decimal(10, 3), nullable=False)
+    quantity = Column(Numeric(10, 3), nullable=False)
     unit = Column(String(50), nullable=False)
-    unit_price = Column(Decimal(12, 2), nullable=False)
-    total = Column(Decimal(12, 2), nullable=False)
+    unit_price = Column(Numeric(12, 2), nullable=False)
+    total = Column(Numeric(12, 2), nullable=False)
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
     
@@ -60,7 +61,7 @@ class FixedCost(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(255), nullable=False)
     category = Column(SQLEnum(FixedCostCategory), nullable=False, default=FixedCostCategory.other)
-    monthly_amount = Column(Decimal(12, 2), nullable=False)
+    monthly_amount = Column(Numeric(12, 2), nullable=False)
     is_marketing = Column(Boolean, default=False)
     description = Column(Text, nullable=True)
     created_at = Column(DateTime, server_default=func.now())
@@ -82,8 +83,8 @@ class ProductFixedCostAllocation(Base):
     product_id = Column(Integer, ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
     fixed_cost_id = Column(Integer, ForeignKey("fixed_costs.id", ondelete="CASCADE"), nullable=False)
     allocation_method = Column(SQLEnum(AllocationMethod), nullable=False, default=AllocationMethod.proportional)
-    allocated_amount = Column(Decimal(12, 2), nullable=False)
-    allocation_percentage = Column(Decimal(5, 2), default=0.00)
+    allocated_amount = Column(Numeric(12, 2), nullable=False)
+    allocation_percentage = Column(Numeric(5, 2), default=0.00)
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
     
@@ -103,20 +104,20 @@ class BusinessProjection(Base):
     id = Column(Integer, primary_key=True, index=True)
     product_id = Column(Integer, ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
     scenario_name = Column(String(255), default="Default")
-    target_profit_monthly = Column(Decimal(12, 2), nullable=False)
-    selling_price_used = Column(Decimal(12, 2), nullable=False)
+    target_profit_monthly = Column(Numeric(12, 2), nullable=False)
+    selling_price_used = Column(Numeric(12, 2), nullable=False)
     target_units_monthly = Column(Integer, nullable=False)
-    target_units_daily = Column(Decimal(10, 2), nullable=False)
-    projected_revenue = Column(Decimal(12, 2), nullable=False)
-    projected_total_product_cost = Column(Decimal(12, 2), nullable=False)
-    projected_total_fixed_cost = Column(Decimal(12, 2), nullable=False)
-    projected_gross_profit = Column(Decimal(12, 2), nullable=False)
-    projected_net_profit = Column(Decimal(12, 2), nullable=False)
-    gross_margin_percent = Column(Decimal(5, 2), nullable=False)
-    net_margin_percent = Column(Decimal(5, 2), nullable=False)
-    roas_ratio = Column(Decimal(6, 2), nullable=True)
+    target_units_daily = Column(Numeric(10, 2), nullable=False)
+    projected_revenue = Column(Numeric(12, 2), nullable=False)
+    projected_total_product_cost = Column(Numeric(12, 2), nullable=False)
+    projected_total_fixed_cost = Column(Numeric(12, 2), nullable=False)
+    projected_gross_profit = Column(Numeric(12, 2), nullable=False)
+    projected_net_profit = Column(Numeric(12, 2), nullable=False)
+    gross_margin_percent = Column(Numeric(5, 2), nullable=False)
+    net_margin_percent = Column(Numeric(5, 2), nullable=False)
+    roas_ratio = Column(Numeric(6, 2), nullable=True)
     break_even_units = Column(Integer, nullable=False)
-    break_even_revenue = Column(Decimal(12, 2), nullable=False)
+    break_even_revenue = Column(Numeric(12, 2), nullable=False)
     created_at = Column(DateTime, server_default=func.now())
     
     # Relationships
@@ -134,7 +135,7 @@ class UnitsConversion(Base):
     id = Column(Integer, primary_key=True, index=True)
     base_unit = Column(String(50), nullable=False)
     target_unit = Column(String(50), nullable=False)
-    conversion_factor = Column(Decimal(10, 6), nullable=False)
+    conversion_factor = Column(Numeric(10, 6), nullable=False)
     category = Column(String(50), default="general")
     created_at = Column(DateTime, server_default=func.now())
     

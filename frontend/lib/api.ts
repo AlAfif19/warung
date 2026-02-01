@@ -147,6 +147,31 @@ export interface ProjectionCalculationResponse {
   recommendations: string[]
 }
 
+export interface MenuRecommendation {
+  id: number
+  name: string
+  hpp_per_unit: number
+  selling_price?: number
+  pricing_tier: string
+  keywords?: string
+}
+
+export interface SectionNavigation {
+  section_name: string
+  section_path: string
+  button_text: string
+}
+
+export interface ChatbotRequest {
+  message: string
+}
+
+export interface ChatbotResponse {
+  response: string
+  recommendations: MenuRecommendation[]
+  navigation_suggestions: SectionNavigation[]
+}
+
 // API Functions
 export const apiClient = {
   // Health check
@@ -231,6 +256,12 @@ export const apiClient = {
 
   calculateProjection: async (request: ProjectionCalculationRequest) => {
     const response = await api.post<ProjectionCalculationResponse>('/api/calculate/projection', request)
+    return response.data
+  },
+
+  // Chatbot
+  sendChatMessage: async (request: ChatbotRequest) => {
+    const response = await api.post<ChatbotResponse>('/api/chatbot', request)
     return response.data
   },
 }

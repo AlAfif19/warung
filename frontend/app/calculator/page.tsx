@@ -206,8 +206,8 @@ export default function CalculatorPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <header className="bg-white shadow-sm border-b border-gray-200 mb-6">
+        <div className="py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <Calculator className="h-8 w-8 text-primary-600" />
@@ -227,7 +227,7 @@ export default function CalculatorPage() {
       </header>
 
       {/* Progress Steps */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="py-6">
         <div className="flex items-center justify-center mb-8">
           {[1, 2, 3, 4].map((s) => (
             <div key={s} className="flex items-center">
@@ -249,8 +249,8 @@ export default function CalculatorPage() {
 
         {/* Step 1: Product Info */}
         {step === 1 && (
-          <div className="max-w-2xl mx-auto">
-            <div className="card">
+          <div className="max-w-2xl mx-auto mb-6">
+            <div className="card p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6">Informasi Produk</h2>
               
               <div className="space-y-4">
@@ -323,8 +323,8 @@ export default function CalculatorPage() {
 
         {/* Step 2: Raw Materials */}
         {step === 2 && (
-          <div className="max-w-4xl mx-auto">
-            <div className="card">
+          <div className="max-w-4xl mx-auto mb-6">
+            <div className="card p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-semibold text-gray-900">Bahan Baku</h2>
                 <button
@@ -422,9 +422,9 @@ export default function CalculatorPage() {
 
         {/* Step 3: Fixed Costs & Pricing */}
         {step === 3 && (
-          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             {/* Fixed Costs */}
-            <div className="card">
+            <div className="card p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-semibold text-gray-900">Biaya Tetap</h2>
                 <button
@@ -527,7 +527,7 @@ export default function CalculatorPage() {
             </div>
 
             {/* Pricing */}
-            <div className="card">
+            <div className="card p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6">Strategi Harga</h2>
               
               <button
@@ -635,10 +635,10 @@ export default function CalculatorPage() {
 
         {/* Step 4: Results */}
         {step === 4 && projection && (
-          <div className="max-w-7xl mx-auto space-y-6">
+          <div className="space-y-6">
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="card">
+              <div className="card p-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="text-sm text-gray-600 mb-1">Omzet Bulanan</div>
@@ -649,7 +649,7 @@ export default function CalculatorPage() {
                   <TrendingUp className="h-8 w-8 text-primary-600" />
                 </div>
               </div>
-              <div className="card">
+              <div className="card p-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="text-sm text-gray-600 mb-1">Gross Profit</div>
@@ -663,7 +663,7 @@ export default function CalculatorPage() {
                   <Calculator className="h-8 w-8 text-success-600" />
                 </div>
               </div>
-              <div className="card">
+              <div className="card p-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="text-sm text-gray-600 mb-1">Net Profit</div>
@@ -678,7 +678,7 @@ export default function CalculatorPage() {
                 </div>
               </div>
               {projection.roas_ratio && (
-                <div className="card">
+                <div className="card p-6">
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="text-sm text-gray-600 mb-1">ROAS</div>
@@ -694,7 +694,7 @@ export default function CalculatorPage() {
 
             {/* Detailed Results */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="card">
+              <div className="card p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Target Penjualan</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between py-2 border-b border-gray-200">
@@ -724,7 +724,7 @@ export default function CalculatorPage() {
                 </div>
               </div>
 
-              <div className="card">
+              <div className="card p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Rincian Biaya</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between py-2 border-b border-gray-200">
@@ -758,7 +758,7 @@ export default function CalculatorPage() {
             </div>
 
             {/* Recommendations */}
-            <div className="card">
+            <div className="card p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Rekomendasi Bisnis</h3>
               <div className="space-y-3">
                 {projection.gross_margin_percent < 40 && (

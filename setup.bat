@@ -113,6 +113,12 @@ echo Next steps:
 echo   1. Edit backend\.env with your database credentials
 echo   2. Edit frontend\.env if needed (default: http://localhost:8000)
 echo   3. Start MySQL service
+echo.
+echo Quick Start:
+echo   Start both services: start.bat
+echo   Stop both services: stop.bat
+echo.
+echo   Or run manually:
 echo   4. Run backend: cd backend ^&^& venv\Scripts\activate ^&^& uvicorn main:app --reload
 echo   5. Run frontend: cd frontend ^&^& npm run dev
 echo.
