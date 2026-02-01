@@ -35,14 +35,6 @@ REM Activate virtual environment and start backend in background
 call venv\Scripts\activate.bat
 start /B cmd /C "uvicorn main:app --reload --host 0.0.0.0 --port 8000 > ..\backend.log 2>&1"
 
-REM Get the backend PID (using tasklist and findstr)
-for /f "tokens=2" %%i in ('tasklist ^| findstr /i "python.exe" ^| findstr /i /v "findstr"') do (
-    set BACKEND_PID=%%i
-    goto :backend_found
-)
-:backend_found
-echo %BACKEND_PID% > ..\%PID_FILE%
-
 echo [OK] Backend started
 echo      Logs: backend.log
 
@@ -59,25 +51,20 @@ cd frontend
 REM Start frontend in background
 start /B cmd /C "npm run dev > ..\frontend.log 2>&1"
 
-REM Get the frontend PID (using tasklist and findstr)
-for /f "tokens=2" %%i in ('tasklist ^| findstr /i "node.exe" ^| findstr /i /v "findstr"') do (
-    set FRONTEND_PID=%%i
-    goto :frontend_found
-)
-:frontend_found
-echo %FRONTEND_PID% >> ..\%PID_FILE%
-
 echo [OK] Frontend started
 echo      Logs: frontend.log
 
 cd ..
+
+REM Create PID file to mark services as running
+echo running > %PID_FILE%
 
 echo.
 echo ========================================
 echo All services started successfully!
 echo ========================================
 echo.
-echo PIDs saved to: %PID_FILE%
+echo PID file created: %PID_FILE%
 echo.
 echo Access the application:
 echo   Frontend: http://localhost:3000
