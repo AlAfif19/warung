@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Calculator, ShoppingCart, Plus, X, Star, Trash2 } from 'lucide-react';
+import { Calculator, ShoppingCart, Plus, X, Star, Trash2, Minus, ChevronUp, ChevronDown } from 'lucide-react';
 import MenuFilter from '@/components/MenuFilter';
 import BackgroundAnimation from '@/components/BackgroundAnimation';
 
@@ -127,6 +127,10 @@ export default function MenuPage() {
   });
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [itemQuantities, setItemQuantities] = useState<{ [key: string]: number }>({});
+  const [editingQuantity, setEditingQuantity] = useState<{ [key: string]: boolean }>({});
+  const [tempQuantity, setTempQuantity] = useState<{ [key: string]: string }>({});
+  const inputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
 
   // Handle adding item to cart from chatbot
   useEffect(() => {
@@ -174,19 +178,54 @@ export default function MenuPage() {
 
   const handleAddToCart = (itemId: string) => {
     const item = menuItems.find((i) => i.id === itemId);
+    const quantity = itemQuantities[itemId] || 1;
     if (item) {
       setCart((prevCart) => {
         const existingItem = prevCart.find((cartItem) => cartItem.id === itemId);
         if (existingItem) {
           return prevCart.map((cartItem) =>
             cartItem.id === itemId
-              ? { ...cartItem, quantity: cartItem.quantity + 1 }
+              ? { ...cartItem, quantity: cartItem.quantity + quantity }
               : cartItem
           );
         } else {
-          return [...prevCart, { id: item.id, name: item.name, price: item.price, quantity: 1 }];
+          return [...prevCart, { id: item.id, name: item.name, price: item.price, quantity }];
         }
       });
+      // Reset quantity to 1 after adding to cart
+      setItemQuantities(prev => ({ ...prev, [itemId]: 1 }));
+    }
+  };
+
+  const handleQuantityChange = (itemId: string, delta: number) => {
+    setItemQuantities(prev => {
+      const currentQuantity = prev[itemId] || 1;
+      const newQuantity = Math.max(1, currentQuantity + delta);
+      return { ...prev, [itemId]: newQuantity };
+    });
+  };
+
+  const handleQuantityClick = (itemId: string) => {
+    setEditingQuantity(prev => ({ ...prev, [itemId]: true }));
+    setTempQuantity(prev => ({ ...prev, [itemId]: String(itemQuantities[itemId] || 1) }));
+    setTimeout(() => {
+      inputRefs.current[itemId]?.focus();
+      inputRefs.current[itemId]?.select();
+    }, 0);
+  };
+
+  const handleQuantityBlur = (itemId: string) => {
+    const value = parseInt(tempQuantity[itemId]) || 1;
+    setItemQuantities(prev => ({ ...prev, [itemId]: Math.max(1, value) }));
+    setEditingQuantity(prev => ({ ...prev, [itemId]: false }));
+  };
+
+  const handleQuantityKeyDown = (itemId: string, e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleQuantityBlur(itemId);
+      inputRefs.current[itemId]?.blur();
+    } else if (e.key === 'Escape') {
+      setEditingQuantity(prev => ({ ...prev, [itemId]: false }));
     }
   };
 
@@ -393,17 +432,17 @@ export default function MenuPage() {
               <p className="text-xl text-gray-600">Tidak ada menu yang sesuai dengan filter</p>
             </motion.div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredItems.map((item, index) => (
                 <motion.div
                   key={item.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow group"
+                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow group flex flex-col"
                 >
                   {/* Image */}
-                  <div className="h-48 bg-gradient-to-br from-[#ff6b6b] to-[#4ecdc4] flex items-center justify-center relative overflow-hidden">
+                  <div className="h-48 bg-gradient-to-br from-[#ff6b6b] to-[#4ecdc4] flex items-center justify-center relative overflow-hidden rounded-t-2xl">
                     <span className="text-white text-6xl font-bold opacity-20 group-hover:scale-110 transition-transform duration-300">
                       {item.name.charAt(0)}
                     </span>
@@ -413,7 +452,7 @@ export default function MenuPage() {
                   </div>
 
                   {/* Content */}
-                  <div className="p-6">
+                  <div className="p-6 pb-6 flex-1 flex flex-col rounded-b-2xl">
                     <div className="text-xs text-[#ff6b6b] font-medium mb-1 uppercase">
                       {item.category}
                     </div>
@@ -427,24 +466,70 @@ export default function MenuPage() {
                     
                     <p className="text-gray-600 text-sm mb-4 line-clamp-2">{item.description}</p>
 
-                    {/* Buttons */}
-                    <div className="flex gap-2">
+                    {/* Buttons - Card Footer */}
+                    <div className="flex gap-2 mt-auto pt-2 pb-6">
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => handleCalculateHPP(item.id)}
-                        className="flex-1 flex items-center justify-center px-4 py-2 bg-[#ff6b6b] text-white rounded-lg hover:bg-[#ff5252] transition-colors"
+                        className="flex-1 flex items-center justify-center px-3 py-2 bg-[#ff6b6b] text-white rounded-lg hover:bg-[#ff5252] transition-colors text-sm"
                       >
-                        <Calculator className="h-4 w-4 mr-2" />
+                        <Calculator className="h-4 w-4 mr-1" />
                         HPP
                       </motion.button>
+                      
+                      {/* Quantity Selector */}
+                      <div className="flex items-center bg-gray-100 rounded-lg">
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={() => handleQuantityChange(item.id, -1)}
+                          className="w-8 h-10 flex items-center justify-center text-gray-600 hover:text-[#4ecdc4] transition-colors"
+                        >
+                          <ChevronDown className="h-4 w-4" />
+                        </motion.button>
+                        <div 
+                          className="w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-gray-200 rounded transition-colors"
+                          onClick={() => handleQuantityClick(item.id)}
+                        >
+                          {editingQuantity[item.id] ? (
+                            <input
+                              ref={(el) => {
+                                if (el) {
+                                  inputRefs.current[item.id] = el;
+                                }
+                              }}
+                              type="number"
+                              min="1"
+                              value={tempQuantity[item.id] || '1'}
+                              onChange={(e) => setTempQuantity(prev => ({ ...prev, [item.id]: e.target.value }))}
+                              onBlur={() => handleQuantityBlur(item.id)}
+                              onKeyDown={(e) => handleQuantityKeyDown(item.id, e)}
+                              className="w-full h-full text-center bg-transparent font-semibold text-gray-900 outline-none"
+                            />
+                          ) : (
+                            <span className="font-semibold text-gray-900">
+                              {itemQuantities[item.id] || 1}
+                            </span>
+                          )}
+                        </div>
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={() => handleQuantityChange(item.id, 1)}
+                          className="w-8 h-10 flex items-center justify-center text-gray-600 hover:text-[#4ecdc4] transition-colors"
+                        >
+                          <ChevronUp className="h-4 w-4" />
+                        </motion.button>
+                      </div>
+                      
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => handleAddToCart(item.id)}
-                        className="flex-1 flex items-center justify-center px-4 py-2 bg-[#4ecdc4] text-white rounded-lg hover:bg-[#3dbdb5] transition-colors"
+                        className="flex-1 flex items-center justify-center px-3 py-2 bg-[#4ecdc4] text-white rounded-lg hover:bg-[#3dbdb5] transition-colors text-sm"
                       >
-                        <Plus className="h-4 w-4 mr-2" />
+                        <Plus className="h-4 w-4 mr-1" />
                         Tambah
                       </motion.button>
                     </div>
