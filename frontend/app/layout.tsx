@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import Header from '@/components/Header'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Warung HPP Calculator',
-  description: 'Kalkulator HPP & Proyeksi Bisnis untuk UMKM',
+  title: 'Warung HPP Calculator - Platform All-in-One untuk UMKM',
+  description: 'Platform lengkap untuk pemilik warung: kalkulator HPP, manajemen menu, dan proyeksi bisnis',
 }
 
 export default function RootLayout({
@@ -16,7 +17,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Header />
+        <main className="pt-16">{children}</main>
+      </body>
     </html>
   )
 }
