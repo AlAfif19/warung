@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Calculator, Home, Utensils, Info, Menu as MenuIcon, X } from 'lucide-react';
-import { useState } from 'react';
+import { type MouseEvent, useState } from 'react';
 
 const navItems = [
   { label: 'Beranda', path: '/', icon: Home },
@@ -16,6 +16,15 @@ const navItems = [
 export default function Header() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const handleNavigation = (event: MouseEvent<HTMLAnchorElement>, path: string) => {
+    setIsMobileMenuOpen(false);
+
+    if (path === '/' && pathname === '/') {
+      event.preventDefault();
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    }
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-sm">
@@ -37,6 +46,7 @@ export default function Header() {
                 <Link
                   key={item.path}
                   href={item.path}
+                  onClick={(event) => handleNavigation(event, item.path)}
                   className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-300 ${
                     isActive
                       ? 'text-[#ff6b6b] bg-[#ff6b6b]/10'
@@ -88,7 +98,7 @@ export default function Header() {
                   <Link
                     key={item.path}
                     href={item.path}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={(event) => handleNavigation(event, item.path)}
                     className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-300 ${
                       isActive
                         ? 'text-[#ff6b6b] bg-[#ff6b6b]/10'
