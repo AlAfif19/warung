@@ -45,6 +45,8 @@ export default function BackgroundAnimation() {
     }
 
     // Animation loop
+    let animationFrameId = 0;
+
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -68,8 +70,11 @@ export default function BackgroundAnimation() {
       });
 
       // Draw connections between nearby particles
-      particles.forEach((particle, i) => {
-        particles.slice(i + 1).forEach((otherParticle) => {
+      for (let i = 0; i < particles.length; i += 1) {
+        const particle = particles[i];
+
+        for (let j = i + 1; j < particles.length; j += 1) {
+          const otherParticle = particles[j];
           const dx = particle.x - otherParticle.x;
           const dy = particle.y - otherParticle.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
@@ -82,15 +87,16 @@ export default function BackgroundAnimation() {
             ctx.lineTo(otherParticle.x, otherParticle.y);
             ctx.stroke();
           }
-        });
-      });
+        }
+      }
 
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
     };
 
     animate();
 
     return () => {
+      cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resizeCanvas);
     };
   }, []);
