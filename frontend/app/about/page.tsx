@@ -1,33 +1,35 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { Users, Award, Target, Heart, Quote } from 'lucide-react';
 import BackgroundAnimation from '@/components/BackgroundAnimation';
+import { articleImages, teamImages, testimonialImages } from '@/lib/visualAssets';
 
 export default function AboutPage() {
   const teamMembers = [
     {
       name: 'Andi Pratama',
       role: 'Founder & CEO',
-      image: '/assets/images/team/andi.jpg',
+      image: teamImages[0],
       description: 'Berpengalaman 10+ tahun di industri F&B',
     },
     {
       name: 'Siti Rahayu',
       role: 'Head of Product',
-      image: '/assets/images/team/siti.jpg',
+      image: teamImages[1],
       description: 'Ahli dalam UX/UI dan pengembangan produk',
     },
     {
       name: 'Budi Santoso',
       role: 'Head of Technology',
-      image: '/assets/images/team/budi.jpg',
+      image: teamImages[2],
       description: 'Full-stack developer dengan passion untuk edukasi',
     },
     {
       name: 'Dewi Lestari',
       role: 'Head of Operations',
-      image: '/assets/images/team/dewi.jpg',
+      image: teamImages[3],
       description: 'Mengelola operasional dan layanan pelanggan',
     },
   ];
@@ -36,19 +38,19 @@ export default function AboutPage() {
     {
       name: 'Rina',
       role: 'Pemilik Warung Kopi Asik',
-      image: '/assets/images/testimonials/rina.jpg',
+      image: testimonialImages[0],
       quote: 'Sistem ini mengubah bisnis warung saya dari omset Rp5 juta ke Rp25 juta/bulan! Sangat mudah digunakan dan fitur kalkulator HPP-nya sangat membantu.',
     },
     {
       name: 'Agus',
       role: 'Pemilik Warung Nasi Goreng Spesial',
-      image: '/assets/images/testimonials/agus.jpg',
+      image: testimonialImages[1],
       quote: 'Sejak menggunakan platform ini, saya bisa mengatur menu dan harga jual dengan lebih akurat. Omset meningkat 40% dalam 3 bulan!',
     },
     {
       name: 'Maya',
       role: 'Pemilik Cafe Senja',
-      image: '/assets/images/testimonials/maya.jpg',
+      image: testimonialImages[2],
       quote: 'Fitur QR payment dan WhatsApp order sangat memudahkan pelanggan. Layanan support-nya juga sangat responsif!',
     },
   ];
@@ -57,19 +59,19 @@ export default function AboutPage() {
     {
       title: '5 Tips Menghitung HPP Makanan yang Akurat',
       excerpt: 'Pelajari cara menghitung Harga Pokok Produksi dengan tepat untuk menentukan harga jual yang optimal...',
-      image: '/assets/images/blog/hpp-tips.jpg',
+      image: articleImages[0],
       date: '15 Januari 2024',
     },
     {
       title: 'Cara Meningkatkan Omset Warung dengan Digital Marketing',
       excerpt: 'Strategi digital marketing yang terbukti efektif untuk menarik lebih banyak pelanggan ke warung Anda...',
-      image: '/assets/images/blog/digital-marketing.jpg',
+      image: articleImages[1],
       date: '10 Januari 2024',
     },
     {
       title: 'Manajemen Stok yang Efisien untuk Warung',
       excerpt: 'Tips dan trik mengelola stok bahan baku agar tidak ada pemborosan dan selalu tersedia...',
-      image: '/assets/images/blog/stock-management.jpg',
+      image: articleImages[2],
       date: '5 Januari 2024',
     },
   ];
@@ -170,9 +172,7 @@ export default function AboutPage() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
               >
-                <div className="h-48 bg-gradient-to-br from-[#ff6b6b] to-[#4ecdc4] flex items-center justify-center">
-                  <Users className="h-20 w-20 text-white" />
-                </div>
+                <Image src={member.image.src} alt={member.image.alt} width={640} height={480} className="h-48 w-full object-cover" />
                 <div className="p-6">
                   <h3 className="text-xl font-semibold text-gray-900 mb-1">{member.name}</h3>
                   <p className="text-[#ff6b6b] font-medium mb-2">{member.role}</p>
@@ -213,9 +213,7 @@ export default function AboutPage() {
                 <Quote className="h-8 w-8 text-[#ff6b6b] mb-4" />
                 <p className="text-gray-600 mb-6 italic">&ldquo;{testimonial.quote}&rdquo;</p>
                 <div className="flex items-center">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#ff6b6b] to-[#4ecdc4] rounded-full flex items-center justify-center mr-4">
-                    <span className="text-white font-semibold">{testimonial.name.charAt(0)}</span>
-                  </div>
+                  <Image src={testimonial.image.src} alt={testimonial.image.alt} width={96} height={96} className="h-12 w-12 rounded-full object-cover mr-4" />
                   <div>
                     <div className="font-semibold text-gray-900">{testimonial.name}</div>
                     <div className="text-sm text-gray-600">{testimonial.role}</div>
@@ -253,9 +251,7 @@ export default function AboutPage() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
               >
-                <div className="h-48 bg-gradient-to-br from-[#ff6b6b] to-[#4ecdc4] flex items-center justify-center">
-                  <span className="text-white text-6xl font-bold opacity-20">{index + 1}</span>
-                </div>
+                <Image src={post.image.src} alt={post.image.alt} width={800} height={500} className="h-48 w-full object-cover" />
                 <div className="p-6">
                   <div className="text-sm text-[#ff6b6b] mb-2">{post.date}</div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">{post.title}</h3>

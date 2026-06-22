@@ -3,9 +3,11 @@
 import { Suspense, useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Image from 'next/image';
 import { Calculator, ShoppingCart, Plus, X, Star, Trash2, Minus, ChevronUp, ChevronDown } from 'lucide-react';
 import MenuFilter from '@/components/MenuFilter';
 import BackgroundAnimation from '@/components/BackgroundAnimation';
+import { menuImages } from '@/lib/visualAssets';
 
 interface MenuItem {
   id: string;
@@ -442,11 +444,15 @@ function MenuPageContent() {
                   className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow group flex flex-col"
                 >
                   {/* Image */}
-                  <div className="h-48 bg-gradient-to-br from-[#ff6b6b] to-[#4ecdc4] flex items-center justify-center relative overflow-hidden rounded-t-2xl">
-                    <span className="text-white text-6xl font-bold opacity-20 group-hover:scale-110 transition-transform duration-300">
-                      {item.name.charAt(0)}
-                    </span>
-                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
+                  <div className="h-48 bg-gradient-to-br from-[#fff7ed] to-[#ecfeff] relative overflow-hidden rounded-t-2xl">
+                    <Image
+                      src={menuImages[item.id as keyof typeof menuImages].src}
+                      alt={menuImages[item.id as keyof typeof menuImages].alt}
+                      fill
+                      sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                      className="object-contain p-3 transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute z-10 top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
                       <span className="text-[#ff6b6b] font-semibold">Rp {item.price.toLocaleString('id-ID')}</span>
                     </div>
                   </div>
