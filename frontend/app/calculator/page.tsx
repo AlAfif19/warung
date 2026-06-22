@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Calculator, Plus, Trash2, Save, TrendingUp, FileText, Download } from 'lucide-react'
+import { Calculator, Plus, Trash2, Save, TrendingUp, FileText } from 'lucide-react'
 import { formatCurrency, formatPercentage, getMarginColor, getMarginBadgeColor, cn } from '@/lib/utils'
 
 type ProductMode = 'per_pcs' | 'per_batch'
@@ -205,27 +205,6 @@ export default function CalculatorPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200 mb-6">
-        <div className="py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <Calculator className="h-8 w-8 text-primary-600" />
-              <h1 className="text-2xl font-bold text-gray-900">Kalkulator HPP</h1>
-            </div>
-            <div className="flex space-x-2">
-              <button
-                onClick={exportReport}
-                className="btn btn-secondary"
-              >
-                <Download className="h-4 w-4 mr-2" />
-                Ekspor Laporan
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
-
       {/* Progress Steps */}
       <div className="py-6">
         <div className="flex items-center justify-center mb-8">
