@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Calculator, Plus, Trash2, Save, TrendingUp, FileText } from 'lucide-react'
-import { formatCurrency, formatPercentage, getMarginColor, getMarginBadgeColor, cn } from '@/lib/utils'
+import { formatCurrency, formatPercentage, getMarginColor, getMarginBadgeColor, getROASColor, cn } from '@/lib/utils'
 
 type ProductMode = 'per_pcs' | 'per_batch'
 type PricingTier = 'competitive' | 'standard' | 'premium' | 'manual'

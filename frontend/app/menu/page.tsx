@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { Suspense, useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Calculator, ShoppingCart, Plus, X, Star, Trash2, Minus, ChevronUp, ChevronDown } from 'lucide-react';
@@ -117,7 +117,7 @@ const menuItems: MenuItem[] = [
   },
 ];
 
-export default function MenuPage() {
+function MenuPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [filters, setFilters] = useState({
@@ -559,5 +559,13 @@ export default function MenuPage() {
         </footer>
       </div>
     </div>
+  );
+}
+
+export default function MenuPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-50" />}>
+      <MenuPageContent />
+    </Suspense>
   );
 }

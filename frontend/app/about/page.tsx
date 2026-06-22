@@ -211,7 +211,7 @@ export default function AboutPage() {
                 className="bg-white rounded-2xl p-8 shadow-lg relative"
               >
                 <Quote className="h-8 w-8 text-[#ff6b6b] mb-4" />
-                <p className="text-gray-600 mb-6 italic">"{testimonial.quote}"</p>
+                <p className="text-gray-600 mb-6 italic">&ldquo;{testimonial.quote}&rdquo;</p>
                 <div className="flex items-center">
                   <div className="w-12 h-12 bg-gradient-to-br from-[#ff6b6b] to-[#4ecdc4] rounded-full flex items-center justify-center mr-4">
                     <span className="text-white font-semibold">{testimonial.name.charAt(0)}</span>
