@@ -4,7 +4,9 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Users, Award, Target, Heart, Quote } from 'lucide-react';
 import BackgroundAnimation from '@/components/BackgroundAnimation';
+import DecorativeAsset from '@/components/DecorativeAsset';
 import { articleImages, teamImages, testimonialImages } from '@/lib/visualAssets';
+import { decorations } from '@/lib/visualAssets';
 
 export default function AboutPage() {
   const teamMembers = [
@@ -82,12 +84,14 @@ export default function AboutPage() {
       
       <div className="relative z-10">
         {/* Hero Section */}
-        <section className="py-20 mb-8">
+        <section className="relative isolate py-20 mb-8">
+          <DecorativeAsset src={decorations.welcomeBanner} className="hidden lg:block -left-20 top-8 w-64" />
+          <DecorativeAsset src={decorations.leaves} className="hidden md:block -right-8 top-16 w-32" />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center max-w-4xl mx-auto"
+            className="relative z-10 text-center max-w-4xl mx-auto"
           >
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
               Tentang <span className="text-[#ff6b6b]">Warung Digital</span>
@@ -146,13 +150,14 @@ export default function AboutPage() {
         </section>
 
         {/* Team Section */}
-        <section className="py-20 mb-8">
+        <section className="relative isolate py-20 mb-8">
+          <DecorativeAsset src={decorations.warungSign} className="hidden lg:block -left-24 bottom-12 w-48" />
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-16"
+            className="relative z-10 text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Tim Kami
@@ -162,7 +167,7 @@ export default function AboutPage() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {teamMembers.map((member, index) => (
               <motion.div
                 key={member.name}
@@ -190,7 +195,7 @@ export default function AboutPage() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-16"
+            className="relative z-10 text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Apa Kata Pemilik Warung
@@ -200,7 +205,7 @@ export default function AboutPage() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
               <motion.div
                 key={testimonial.name}
@@ -225,13 +230,14 @@ export default function AboutPage() {
         </section>
 
         {/* Blog Section */}
-        <section className="py-20 mb-8">
+        <section className="relative isolate py-20 mb-8">
+          <DecorativeAsset src={decorations.chili} className="hidden md:block -right-8 bottom-8 w-28" />
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-16"
+            className="relative z-10 text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Artikel Terkini
@@ -241,7 +247,7 @@ export default function AboutPage() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8">
             {blogPosts.map((post, index) => (
               <motion.div
                 key={post.title}

@@ -7,7 +7,9 @@ import Image from 'next/image';
 import { Calculator, ShoppingCart, Plus, X, Star, Trash2, Minus, ChevronUp, ChevronDown } from 'lucide-react';
 import MenuFilter from '@/components/MenuFilter';
 import BackgroundAnimation from '@/components/BackgroundAnimation';
+import DecorativeAsset from '@/components/DecorativeAsset';
 import { menuImages } from '@/lib/visualAssets';
+import { decorations } from '@/lib/visualAssets';
 
 interface MenuItem {
   id: string;
@@ -402,12 +404,14 @@ function MenuPageContent() {
 
       <div className="relative z-10">
         {/* Hero Section */}
-        <section className="py-12 mb-8">
+        <section className="relative isolate py-12 mb-8">
+          <DecorativeAsset src={decorations.warungSign} className="hidden lg:block -left-20 top-2 w-56" />
+          <DecorativeAsset src={decorations.menuBoard} className="hidden lg:block -right-12 top-0 w-40" />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center max-w-4xl mx-auto"
+            className="relative z-10 text-center max-w-4xl mx-auto"
           >
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
               Menu <span className="text-[#ff6b6b]">Warung</span>
@@ -424,17 +428,18 @@ function MenuPageContent() {
         </section>
 
         {/* Menu Grid */}
-        <section className="pb-20">
+        <section className="relative isolate pb-20">
+          <DecorativeAsset src={decorations.freshBadge} className="hidden md:block -left-8 top-16 w-28" />
           {filteredItems.length === 0 ? (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center py-20"
+              className="relative z-10 text-center py-20"
             >
               <p className="text-xl text-gray-600">Tidak ada menu yang sesuai dengan filter</p>
             </motion.div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredItems.map((item, index) => (
                 <motion.div
                   key={item.id}

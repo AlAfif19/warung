@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { Calculator, ShoppingCart, QrCode, MessageSquare, TrendingUp, ArrowRight, CheckCircle, Bot } from 'lucide-react';
 import BackgroundAnimation from '@/components/BackgroundAnimation';
 import Chatbot from '@/components/Chatbot';
+import DecorativeAsset from '@/components/DecorativeAsset';
+import { decorations } from '@/lib/visualAssets';
 
 export default function Home() {
   return (
@@ -13,12 +15,14 @@ export default function Home() {
       
       <div className="relative z-10">
         {/* Hero Section */}
-        <section className="py-20 md:py-32 mb-8">
+        <section className="relative isolate py-20 md:py-32 mb-8">
+          <DecorativeAsset src={decorations.burger} className="hidden lg:block -left-20 top-8 w-56 xl:w-64" />
+          <DecorativeAsset src={decorations.icedTea} className="hidden lg:block -right-16 top-20 w-40 xl:w-48" />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center max-w-4xl mx-auto"
+            className="relative z-10 text-center max-w-4xl mx-auto"
           >
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -62,13 +66,15 @@ export default function Home() {
         </section>
 
         {/* Features Section */}
-        <section className="py-20 mb-8">
+        <section className="relative isolate py-20 mb-8">
+          <DecorativeAsset src={decorations.fries} className="hidden md:block -left-12 bottom-10 w-36 lg:w-44" />
+          <DecorativeAsset src={decorations.friedChicken} className="hidden lg:block -right-16 bottom-4 w-48" />
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-16"
+            className="relative z-10 text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Fitur Unggulan
@@ -78,7 +84,7 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {
                 icon: ShoppingCart,

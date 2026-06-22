@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import { Calculator, Plus, Trash2, Save, TrendingUp, FileText } from 'lucide-react'
 import { formatCurrency, formatPercentage, getMarginColor, getMarginBadgeColor, getROASColor, cn } from '@/lib/utils'
+import DecorativeAsset from '@/components/DecorativeAsset'
+import { decorations } from '@/lib/visualAssets'
 
 type ProductMode = 'per_pcs' | 'per_batch'
 type PricingTier = 'competitive' | 'standard' | 'premium' | 'manual'
@@ -204,9 +206,11 @@ export default function CalculatorPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="relative isolate min-h-screen overflow-hidden bg-gray-50">
+      <DecorativeAsset src={decorations.valueBadge} className="hidden md:block -left-6 top-24 w-28" />
+      <DecorativeAsset src={decorations.chili} className="hidden md:block -right-8 bottom-24 w-32" />
       {/* Progress Steps */}
-      <div className="py-6">
+      <div className="relative z-10 py-6">
         <div className="flex items-center justify-center mb-8">
           {[1, 2, 3, 4].map((s) => (
             <div key={s} className="flex items-center">
