@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Calculator, Home, Utensils, Info, Menu as MenuIcon, X } from 'lucide-react';
 import { type MouseEvent, useState } from 'react';
@@ -15,14 +15,25 @@ const navItems = [
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const scrollToPageTop = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  };
 
   const handleNavigation = (event: MouseEvent<HTMLAnchorElement>, path: string) => {
     setIsMobileMenuOpen(false);
 
-    if (path === '/' && pathname === '/') {
+    if (path === '/') {
       event.preventDefault();
-      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      scrollToPageTop();
+
+      if (pathname !== '/') {
+        router.push('/');
+        window.requestAnimationFrame?.(scrollToPageTop);
+        window.setTimeout(scrollToPageTop, 0);
+      }
     }
   };
 
