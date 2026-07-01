@@ -1,318 +1,199 @@
-# 📊 Warung HPP Calculator & Business Projection
+# Warung HPP
 
-A comprehensive web application for calculating HPP (Harga Pokok Production - Cost of Goods Sold) and business projections for SMEs (UMKM) in Indonesia.
+Warung HPP adalah aplikasi web untuk membantu pemilik warung dan UMKM mengelola menu, menghitung HPP, menentukan harga jual, dan melihat proyeksi bisnis. Aplikasi ini dibangun dengan Next.js untuk frontend dan FastAPI untuk backend.
 
-## 🎯 Features
+## Daftar Section Keseluruhan
 
-### Core Features
+### Beranda
 
-- **HPP Calculation**: Calculate Cost of Goods Sold per unit or per batch
-- **Pricing Strategies**: 3-tier pricing suggestions (Competitive, Standard, Premium)
-- **Business Projections**: Monthly sales targets, revenue, costs, and profit projections
-- **KPI Metrics**: Gross Profit, Net Profit, Gross Margin, Net Margin, ROAS
-- **Fixed Cost Allocation**: Proportional or manual allocation methods
-- **Break-Even Analysis**: Calculate break-even point and revenue
-- **Business Recommendations**: Automated recommendations based on calculated metrics
+1. Hero
+2. Fitur Unggulan
+3. Paket Harga
+4. CTA Pengembangan Bisnis
+5. Chatbot Asisten Virtual
+6. Footer
 
-### Technical Features
+### Menu
 
-- **Frontend**: Next.js 14 with App Router, React, TypeScript, TailwindCSS
-- **Backend**: Python FastAPI with SQLAlchemy ORM
-- **Database**: MySQL with comprehensive schema
-- **API**: RESTful API with full CRUD operations
-- **Export**: PDF and Excel report generation (planned)
+1. Hero Menu
+2. Filter Menu
+3. Grid Menu
+4. Keranjang
 
-## 🏗️ Architecture
+### Tentang
 
-```
-warung/
-├── frontend/              # Next.js frontend
-│   ├── app/             # App Router pages
-│   ├── lib/             # Utilities and API client
-│   └── components/      # Reusable components
-├── backend/              # Python FastAPI backend
-│   ├── main.py          # FastAPI application
-│   ├── models.py        # SQLAlchemy models
-│   ├── schemas.py       # Pydantic schemas
-│   ├── calculations.py   # Business logic
-│   └── database.py     # Database configuration
-└── database/            # SQL schema files
-    └── schema.sql       # MySQL database schema
-```
+1. Hero Tentang
+2. Sejarah dan Statistik
+3. Tim Kami
+4. Testimoni Pemilik Warung
+5. Artikel Terkini
+6. Footer
 
-## 🚀 Getting Started
+### Kalkulator HPP
 
-### Prerequisites
+1. Informasi Produk
+2. Bahan Baku
+3. Biaya Tetap dan Strategi Harga
+4. Hasil Proyeksi Bisnis
 
-- Node.js 18+ and npm
-- Python 3.10+
-- MySQL 8.0+
+## Screenshot dan Penjelasan Per Section
 
-### Database Setup
+### 1. Beranda - Hero
 
-1. Create MySQL database:
+![Beranda Hero](docs/screenshots/home-hero.png)
 
-```bash
-mysql -u root -p
-```
+Section pembuka menampilkan pesan utama "Bikin Website Warung Sendiri, Sekarang!" dengan dua aksi utama: masuk ke Kalkulator HPP atau melihat halaman Menu. Bagian ini menjadi pintu masuk utama pengguna.
 
-2. Run the schema:
+### 2. Beranda - Fitur Unggulan
 
-```sql
-source database/schema.sql
-```
+![Beranda Fitur Unggulan](docs/screenshots/home-features.png)
 
-### Backend Setup
+Section ini memperkenalkan fitur inti platform: Kasir & POS, QR Code Payment, WhatsApp Order, dan Kalkulator HPP. Setiap fitur ditampilkan dalam kartu agar mudah dipindai.
 
-1. Navigate to backend directory:
+### 3. Beranda - Paket Harga
 
-```bash
-cd backend
-```
+![Beranda Paket Harga](docs/screenshots/home-pricing.png)
 
-2. Create virtual environment:
+Section paket harga membandingkan pilihan Dasar, Standar, dan Bisnis. Paket Standar diberi penanda "Paling Populer" untuk menonjolkan rekomendasi utama.
 
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+### 4. Beranda - CTA Pengembangan Bisnis
 
-3. Install dependencies:
+![Beranda CTA](docs/screenshots/home-cta.png)
 
-```bash
-pip install -r requirements.txt
-```
+Section CTA mengajak pemilik warung mulai memakai platform untuk mengembangkan bisnis. Tombol utama diarahkan ke halaman Kalkulator HPP.
 
-4. Configure environment:
+### 5. Beranda - Chatbot Asisten Virtual
 
-```bash
-cp .env.example .env
-# Edit .env with your database credentials
-```
+![Beranda Chatbot](docs/screenshots/home-chatbot.png)
 
-5. Run the server:
+Section chatbot menyediakan area percakapan untuk bertanya tentang rekomendasi menu atau informasi layanan. Tujuannya membantu pengguna mendapatkan jawaban cepat tanpa berpindah halaman.
 
-```bash
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
-```
+### 6. Beranda - Footer
 
-The API will be available at `http://localhost:8000`
+![Beranda Footer](docs/screenshots/home-footer.png)
 
-### Frontend Setup
+Footer menutup halaman dengan identitas aplikasi dan keterangan bahwa aplikasi dibuat untuk mendukung UMKM Indonesia.
 
-1. Navigate to frontend directory:
+### 7. Menu - Hero
+
+![Menu Hero](docs/screenshots/menu-hero.png)
+
+Hero halaman Menu menjelaskan bahwa pengguna dapat memilih menu favorit dan menghitung HPP dari menu tersebut. Bagian ini memberi konteks sebelum pengguna masuk ke daftar produk.
+
+### 8. Menu - Filter Menu
+
+![Menu Filter](docs/screenshots/menu-filter.png)
+
+Filter Menu menyediakan pencarian, pilihan kategori, dan batas harga maksimum. Fitur ini membantu pengguna menemukan menu berdasarkan kebutuhan dengan cepat.
+
+### 9. Menu - Grid Menu
+
+![Menu Grid](docs/screenshots/menu-grid.png)
+
+Grid Menu menampilkan kartu makanan dan minuman berisi gambar, kategori, rating, deskripsi, harga, tombol HPP, pilihan jumlah, dan tombol tambah ke keranjang.
+
+### 10. Menu - Keranjang
+
+![Menu Keranjang](docs/screenshots/menu-cart.png)
+
+Keranjang muncul sebagai panel samping. Pengguna dapat melihat item pesanan, mengubah jumlah, menghapus item, melihat total harga, dan melanjutkan ke checkout.
+
+### 11. Tentang - Hero
+
+![Tentang Hero](docs/screenshots/about-hero.png)
+
+Hero halaman Tentang memperkenalkan Warung Digital sebagai platform yang membantu warung tradisional bertransformasi digital sejak 2020.
+
+### 12. Tentang - Sejarah dan Statistik
+
+![Tentang Sejarah dan Statistik](docs/screenshots/about-history.png)
+
+Section ini menjelaskan latar belakang platform dan menampilkan metrik penting seperti jumlah warung terbantu, kepuasan pelanggan, rata-rata kenaikan omzet, dan dukungan pelanggan.
+
+### 13. Tentang - Tim Kami
+
+![Tentang Tim Kami](docs/screenshots/about-team.png)
+
+Section Tim Kami memperlihatkan profil anggota tim, peran, dan ringkasan pengalaman mereka. Bagian ini membangun kepercayaan terhadap orang di balik platform.
+
+### 14. Tentang - Testimoni Pemilik Warung
+
+![Tentang Testimoni](docs/screenshots/about-testimonials.png)
+
+Section testimoni menampilkan cerita pemilik warung yang merasakan dampak positif dari penggunaan platform, seperti peningkatan omzet dan kemudahan operasional.
+
+### 15. Tentang - Artikel Terkini
+
+![Tentang Artikel](docs/screenshots/about-blog.png)
+
+Section artikel berisi konten edukasi seputar HPP, digital marketing, dan manajemen stok. Bagian ini memperkuat posisi aplikasi sebagai pendamping bisnis, bukan hanya alat hitung.
+
+### 16. Tentang - Footer
+
+![Tentang Footer](docs/screenshots/about-footer.png)
+
+Footer pada halaman Tentang menjaga konsistensi identitas aplikasi dan menutup halaman dengan pesan dukungan untuk UMKM.
+
+### 17. Kalkulator HPP - Informasi Produk
+
+![Kalkulator Informasi Produk](docs/screenshots/calculator-step-1.png)
+
+Step pertama meminta nama produk dan mode perhitungan, yaitu per pcs atau per resep/batch. Ini menjadi dasar cara aplikasi menghitung biaya per unit.
+
+### 18. Kalkulator HPP - Bahan Baku
+
+![Kalkulator Bahan Baku](docs/screenshots/calculator-step-2.png)
+
+Step Bahan Baku dipakai untuk memasukkan komponen produksi seperti nama bahan, jumlah, satuan, harga per satuan, dan total biaya. Data ini menjadi komponen utama perhitungan HPP.
+
+### 19. Kalkulator HPP - Biaya Tetap dan Strategi Harga
+
+![Kalkulator Biaya Tetap dan Strategi Harga](docs/screenshots/calculator-step-3.png)
+
+Step ketiga menggabungkan biaya tetap, metode alokasi, hasil HPP per unit, dan pilihan tier harga. Pengguna dapat memilih harga kompetitif, standar, premium, atau mengisi harga manual.
+
+### 20. Kalkulator HPP - Hasil Proyeksi Bisnis
+
+![Kalkulator Hasil Proyeksi](docs/screenshots/calculator-step-4-results.png)
+
+Step hasil menampilkan KPI bisnis seperti omzet bulanan, gross profit, net profit, target penjualan, break-even point, rincian biaya, dan rekomendasi bisnis berdasarkan margin.
+
+## Teknologi
+
+- Frontend: Next.js 14, React, TypeScript, TailwindCSS
+- Backend: FastAPI, SQLAlchemy
+- Database: MySQL
+- UI: Lucide React, Framer Motion, Recharts
+
+## Menjalankan Project
+
+### Frontend
 
 ```bash
 cd frontend
-```
-
-2. Install dependencies:
-
-```bash
 npm install
-```
-
-3. Configure environment:
-
-```bash
-cp .env.example .env
-# Edit .env if needed
-```
-
-4. Run the development server:
-
-```bash
 npm run dev
 ```
 
-The application will be available at `http://localhost:3000`
+Frontend berjalan di `http://localhost:3000`.
 
-## 📚 API Documentation
+### Backend
 
-Once the backend is running, visit:
-
-- Swagger UI: `http://localhost:8000/docs`
-- ReDoc: `http://localhost:8000/redoc`
-
-### Main Endpoints
-
-#### Products
-
-- `GET /api/products` - List all products
-- `POST /api/products` - Create a new product
-- `GET /api/products/{id}` - Get product details
-- `PUT /api/products/{id}` - Update a product
-- `DELETE /api/products/{id}` - Delete a product
-
-#### Raw Materials
-
-- `POST /api/products/{id}/raw-materials` - Add raw material to product
-
-#### Fixed Costs
-
-- `GET /api/fixed-costs` - List all fixed costs
-- `POST /api/fixed-costs` - Create a fixed cost
-- `GET /api/fixed-costs/{id}` - Get fixed cost details
-
-#### Fixed Cost Allocations
-
-- `POST /api/products/{id}/fixed-cost-allocations` - Add allocation to product
-
-#### Business Projections
-
-- `POST /api/business-projections` - Create a projection
-- `GET /api/products/{id}/projections` - List product projections
-
-#### Calculations
-
-- `POST /api/calculate/hpp` - Calculate HPP (without saving)
-- `POST /api/calculate/projection` - Calculate projection (without saving)
-
-## 📊 Database Schema
-
-### Tables
-
-- `products` - Product information and HPP
-- `raw_materials` - Raw materials for products
-- `fixed_costs` - Fixed costs (rent, utilities, etc.)
-- `product_fixed_cost_allocations` - Allocation of fixed costs to products
-- `business_projections` - Business projection calculations
-- `units_conversion` - Unit conversion factors
-- `scenarios` - Calculation scenarios for comparison
-
-## 🧮 Calculation Logic
-
-### HPP Calculation
-
-```
-HPP per unit = (Total Raw Material Cost per unit) + (Fixed Cost Allocation per unit)
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### Pricing Tiers
+Backend berjalan di `http://localhost:8000`.
 
-| Tier        | Margin | Formula    |
-| ----------- | ------ | ---------- |
-| Competitive | 15%    | HPP × 1.15 |
-| Standard    | 30%    | HPP × 1.30 |
-| Premium     | 50%    | HPP × 1.50 |
+## Struktur Project
 
-### Business Projection
-
+```text
+warung/
+├── frontend/        # Aplikasi Next.js
+├── backend/         # API FastAPI
+├── database/        # File database dan aset pendukung
+├── docs/            # Dokumentasi dan screenshot
+└── README.md        # Dokumentasi utama GitHub
 ```
-Target Units = (Total Fixed Costs + Target Profit) / (Selling Price - HPP)
-Daily Target = Monthly Target / 30
-```
-
-### KPI Metrics
-
-- **Gross Profit** = Revenue - COGS
-- **Net Profit** = Revenue - (COGS + Fixed Costs)
-- **Gross Margin** = (Gross Profit / Revenue) × 100
-- **Net Margin** = (Net Profit / Revenue) × 100
-- **ROAS** = Revenue / Marketing Cost
-
-### Break-Even Point
-
-```
-BEP (units) = Total Fixed Costs / (Selling Price - HPP)
-BEP (revenue) = BEP (units) × Selling Price
-```
-
-## 🎨 UI Components
-
-### Calculator Page
-
-- Step-by-step wizard interface
-- Dynamic form for raw materials
-- Fixed cost allocation management
-- Real-time HPP calculation
-- Pricing tier selection
-- Business projection results
-- KPI dashboard cards
-- Business recommendations
-
-### Features
-
-- Responsive design (mobile-first)
-- Dark mode support (planned)
-- Export to PDF/Excel (planned)
-- Save and compare scenarios (planned)
-
-## 🔧 Configuration
-
-### Backend Environment Variables
-
-```env
-DB_HOST=localhost
-DB_PORT=3306
-DB_NAME=warung_hpp
-DB_USER=root
-DB_PASSWORD=
-APP_NAME=Warung HPP API
-DEBUG=True
-CORS_ORIGINS=http://localhost:3000
-SECRET_KEY=your-secret-key
-```
-
-### Frontend Environment Variables
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:8000
-NEXT_PUBLIC_APP_NAME=Warung HPP Calculator
-```
-
-## 📈 Roadmap
-
-### Phase 1 (MVP) ✅
-
-- [x] HPP calculation (per pcs/batch)
-- [x] Fixed cost allocation
-- [x] 3-tier pricing suggestions
-- [x] Business projection calculator
-- [x] KPI metrics (Gross/Net Profit, Margin, ROAS)
-- [x] Basic UI with calculator
-
-### Phase 2 (V2) 🚧
-
-- [ ] Save and compare scenarios
-- [ ] Export to PDF/Excel
-- [ ] Product management dashboard
-- [ ] Chart visualizations (Recharts)
-- [ ] Multi-product support
-
-### Phase 3 (V3) 📋
-
-- [ ] Inventory integration
-- [ ] Sensitivity analysis
-- [ ] Historical data tracking
-- [ ] User authentication
-- [ ] Multi-language support
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 👥 Authors
-
-- Kilo Code - Initial development
-
-## 🙏 Acknowledgments
-
-- Built with Next.js and FastAPI
-- UI styled with TailwindCSS
-- Icons from Lucide React
-- Charts powered by Recharts
-
-## 📞 Support
-
-For support, please open an issue in the GitHub repository.
